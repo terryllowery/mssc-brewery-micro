@@ -2,12 +2,10 @@ package net.lowerytech.msscbrewmicro.web.controller;
 
 import net.lowerytech.msscbrewmicro.web.model.BeerDTO;
 import net.lowerytech.msscbrewmicro.web.service.BeerService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -24,5 +22,15 @@ public class BeerController {
     @GetMapping("/{beerId}")
     public ResponseEntity<BeerDTO> getBeer(@PathVariable UUID beerId){
         return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity handlePost(BeerDTO beerDTO){
+        BeerDTO savedDto = beerService.saveNewBeer(beerDTO);
+        HttpHeaders headers = new HttpHeaders();
+        // TODO: add hostname to url
+        headers.add("Location", "/api/v1/beer/" + savedDto.getId().toString());
+        return new ResponseEntity(headers, HttpStatus.CREATED);
+
     }
 }
