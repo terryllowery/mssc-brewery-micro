@@ -4,6 +4,7 @@ import net.lowerytech.msscbrewmicro.web.model.BeerDTO;
 
 import java.util.UUID;
 
+@Deprecated
 public interface BeerService {
 
 
@@ -12,4 +13,6 @@ public interface BeerService {
     BeerDTO saveNewBeer(BeerDTO beerDTO);
 
     void updateBeer(UUID beerId, BeerDTO beerDTO);
+
+    void deleteById(UUID beerId);
 }

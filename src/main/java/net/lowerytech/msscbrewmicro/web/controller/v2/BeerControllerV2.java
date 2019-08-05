@@ -1,7 +1,7 @@
-package net.lowerytech.msscbrewmicro.web.controller;
+package net.lowerytech.msscbrewmicro.web.controller.v2;
 
-import net.lowerytech.msscbrewmicro.web.model.BeerDTO;
-import net.lowerytech.msscbrewmicro.web.service.BeerService;
+import net.lowerytech.msscbrewmicro.web.model.v2.BeerDtoV2;
+import net.lowerytech.msscbrewmicro.web.service.v2.BeerServiceV2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,24 +9,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("/api/v1/beer")
 @RestController
-public class BeerController {
+@RequestMapping("/api/v2/beer")
+public class BeerControllerV2 {
 
-    private BeerService beerService;
+    private BeerServiceV2 beerService;
 
-    public BeerController(BeerService beerService){
+    public BeerControllerV2(BeerServiceV2 beerService){
         this.beerService = beerService;
     }
 
     @GetMapping("/{beerId}")
-    public ResponseEntity<BeerDTO> getBeer(@PathVariable UUID beerId){
+    public ResponseEntity<BeerDtoV2> getBeer(@PathVariable UUID beerId){
         return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity handlePost(BeerDTO beerDTO){
-        BeerDTO savedDto = beerService.saveNewBeer(beerDTO);
+    public ResponseEntity handlePost(BeerDtoV2 beerDTO){
+        BeerDtoV2 savedDto = beerService.saveNewBeer(beerDTO);
         HttpHeaders headers = new HttpHeaders();
         // TODO: add hostname to url
         headers.add("Location", "/api/v1/beer/" + savedDto.getId().toString());
@@ -34,7 +34,7 @@ public class BeerController {
     }
 
     @PutMapping("/{beerId}")
-    public ResponseEntity handleUpdate(@PathVariable UUID beerId, BeerDTO beerDTO){
+    public ResponseEntity handleUpdate(@PathVariable UUID beerId, BeerDtoV2 beerDTO){
         beerService.updateBeer(beerId, beerDTO);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
